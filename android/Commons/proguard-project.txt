@@ -1,0 +1,27 @@
+# Settings for triaina
+
+# modules are instantiated by reflection so make sure their
+# constructors don't get stripped:
+-keepclassmembers class * extends com.google.inject.Module {
+    <init> ();
+    <init> (android.content.Context);
+}
+
+# event-observing methods are called by the framework and registered by injection,
+# so if we don't keep them they'll most likely be shrinked ;
+# they can however be obfuscated (as long as they're not shrinked)
+-keepclassmembers ,allowobfuscation class * {
+    @roboguice.event.Observes <methods>;
+}
+
+-keep class triaina.commons.http.FixedHttpClient {
+    *;
+}
+
+-keep class * implements triaina.commons.workerservice.Worker {
+    *;
+}
+
+-keep class * implements triaina.commons.workerservice.Job {
+    *;
+}

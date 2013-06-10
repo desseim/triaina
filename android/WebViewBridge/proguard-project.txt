@@ -1,0 +1,38 @@
+# Settings for triaina
+
+# modules are instantiated by reflection so make sure their
+# constructors don't get stripped:
+-keepclassmembers class * extends com.google.inject.Module {
+    <init> ();
+    <init> (android.content.Context);
+}
+
+# event-observing methods are called by the framework and registered by injection,
+# so if we don't keep them they'll most likely be shrinked ;
+# they can however be obfuscated (as long as they're not shrinked)
+-keepclassmembers ,allowobfuscation class * {
+    @roboguice.event.Observes <methods>;
+}
+
+-keep public class triaina.webview.DeviceBridgeProxy {
+    public void notifyToDevice(java.lang.String);
+}
+
+-keepclassmembers class * {
+    @triaina.webview.annotation.Bridge <methods>;
+}
+
+-keep class * implements triaina.webview.entity.Error {
+    *;
+}
+
+-keep class * implements triaina.webview.entity.Params {
+    *;
+}
+
+-keep class * implements triaina.webview.entity.Result {
+    *;
+}
+
+-keep public class triaina.webview.WebViewBridgeModule
+
